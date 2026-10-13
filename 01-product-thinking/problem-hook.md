@@ -1,53 +1,22 @@
-# Problem Hook & Value Proposition: [StreamLine / RouteLogic / your initiative]
+# Problem Hook & Value Proposition, Module 1
 
-> **Module 1 · ★ Deliverable 1.** Repo file `01-product-thinking/problem-hook.md` — part of your submission.
-> Do the lab in the **Module 1 · Exercise 2 Guide** (linked from the Module 1 deck), then click **⬇ Download .md** — it saves as this exact file. Commit it here.
-> It becomes the **Problem, Value & Hypothesis** slide of your Module 6 final deck. (Your Module 1 · Exercise 1 discovery map lands in `strategic-map.md`.)
+- **Scenario:** My own initiative
 
-## 1. Chosen scenario
+## Strategic crisis
+If Assets InsightHub does nothing for 12 months, growing fragmentation and continued reliance on ad-hoc requests could reduce user trust and adoption, increase duplicated Data & AI efforts, and weaken the platform’s position as the enterprise source for trusted data and insights.
 
-**Path:** _StreamLine Spotlight (B2C) · RouteLogic Velocity (B2B) · my own initiative_
+## Moment of misery
+The user is currently forced to search across multiple dashboards and reports, rely on spreadsheets or manual extracts, or contact the Data team to find and validate the information they need before they can make a decision.
 
-_One line on why you picked it._
+## Problem hook
+As business users struggle to find and trust the insights they need, Assets InsightHub risks becoming a fragmented collection of Data & AI solutions rather than the trusted enterprise platform for faster, better decision-making.
 
-## 2. The strategic crisis
+## Value proposition
+For Business users and decision-makers who need timely, trusted data and insights, we will Provide a simple, unified Data & AI experience that makes trusted insights easier to discover, understand, and use for decision-making because Growing fragmentation and ad-hoc demand are increasing complexity and making it harder for users to find trusted answers quickly.
 
-_The big-picture business risk. If the company does nothing for 12 months, what happens to its market position?_
+## Cold-read self-review
+Is the business risk high-stakes enough?
+ Yes, if we frame the risk as loss of trust and adoption. If users stop relying on Assets InsightHub as the trusted enterprise Data & AI platform, they revert to fragmented reports, spreadsheets, and manual requests, undermining the value of the enterprise platform.
 
-> If we do nothing for 12 months, the company will…
-
-## 3. The moment of misery
-
-_The specific point where the product fails the user, forcing a manual workaround (Google, spreadsheets, group texts, a competitor)._
-
-> The user is currently forced to…
-
-## 4. Problem hook
-
-_One urgent sentence fusing the business risk and the user pain, your pitch for why this is the most important thing to work on right now._
-
-> We must solve [business risk] by addressing [user pain]…
-
-## 5. Value proposition
-
-_Who it's for, the new value, and why it's urgent to launch now._
-
-> For **[who]**, we will **[value]** because **[urgent why]**.
-
-## 6. Cold-read self-review
-
-_Read your hook back as a skeptical stakeholder. If you don't feel the urgency, that's your data._
-
-| Question | Your answer |
-|---|---|
-| Is the business risk high-stakes enough to justify a new initiative? | _____ |
-| Is the moment of misery systemic, or just an edge case? | _____ |
-| Does the value proposition actually remove the obstacle? | _____ |
-
-## 7. Finalized hypothesis _(complete in Module 3)_
-
-> Based on [qual + quant evidence], I believe that [solving X] for [persona] will result in [outcome], as measured by a [X%] change in [success metric]. I will protect [guardrail metric] and make a go/no-go decision after [decision window].
-
-## Link to full artifact
-
-_[link to your Problem Hook Builder export]_
+Is the misery systemic?
+ Yes. The problem is not one slow dashboard or one missing report. It is the recurring difficulty of finding, accessing, and trusting the right insight across multiple business needs, which creates dependency on manual work and the Data team.
