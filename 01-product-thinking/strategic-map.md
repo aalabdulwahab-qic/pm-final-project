@@ -1,11 +1,7 @@
-# Strategic Discovery Map
-
-> **Module 1 · Lab 1.** Repo file `01-product-thinking/strategic-map.md` — part of your submission.
-> Do the lab in the **Module 1 · Exercise 1 Guide** (linked from the Module 1 deck), then click **⬇ Download .md** — it saves as this exact file. Commit it here.
-> It's the discovery groundwork behind your `problem-hook.md`.
+# Strategic Discovery Map (Module 1)
 
 ## Responses
-
-- **Feature with no strategic answer (why is this a 12-week priority?):** _(not filled in)_
-- **Feature that looks "correct" but has zero strategic weight:** _(not filled in)_
-- **V3 vs your Step 1 baseline — what changed, and was it your PM knowledge that forced usefulness?:** _(not filled in)_
+- **Write one feature from the map that, if an engineer asked “why is this a priority for our 12-week roadmap?”, you honestly could not give a strategic answer for.:** Gamification with leaderboards
+- **Write one feature that looks “correct” for the app but has zero strategic weight, you have no idea if it helps the company make money or whether a single user actually asked for it.:** Profile customization, such as themes: It sounds appropriate for a consumer app, but right now we have no evidence that users actually want it or that it would improve hydration, engagement, retention, or revenue. I couldn’t strategically justify putting it on the roadmap yet.
+- **Compare V3 to your Step 1 baseline. What changed, and is the output objectively better, did the AI get smarter, or did your added PM knowledge (JTBD, effort/impact, retention) force it to be useful?:** Yes, V3 is objectively more useful than the Step 1 baseline. What Changed ? V1 generated a list of plausible app features while V3 is specific to users like adults aged 25–40 who know they should drink more but forget. the reason for that is not that the AI got smarter but because the prompt got smarter.
+- **Key takeaway: how does this prove the PM’s role is to think while the AI’s role is to execute?:** The PM provides the thinking; AI accelerates the execution. The PM defines the right user problem, strategic context, priorities, constraints, and trade-offs. AI can rapidly generate, structure, and explore options within that direction, but it cannot decide which problem is truly worth solving without the context and judgment the PM brings.
