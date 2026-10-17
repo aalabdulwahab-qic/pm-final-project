@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assets InsightHub – Future State Journey</title>
+<style>
+  :root {
+    --ink: #1f2937; --muted: #6b7280; --line: #d1d5db; --bg: #f8fafc;
+    --c1: #2563eb; --c2: #7c3aed; --c3: #059669; --c4: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); background: var(--bg); }
+  .page { max-width: 1200px; margin: 0 auto; }
+  header h1 { margin: 0; font-size: 24px; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+
+  /* Timeline */
+  .timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px 0 8px; }
+  .timeline::before { content: ""; position: absolute; top: 18px; left: 6%; right: 4%; height: 4px; background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c4)); border-radius: 2px; }
+  .timeline::after { content: ""; position: absolute; top: 10px; right: 1.5%; border-left: 14px solid var(--c4); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+  .node { position: relative; text-align: center; }
+  .dot { width: 36px; height: 36px; margin: 0 auto 8px; border-radius: 50%; color: #fff; font-weight: 700; line-height: 36px; border: 3px solid var(--bg); position: relative; z-index: 1; }
+  .node h3 { margin: 0; font-size: 15px; text-transform: uppercase; letter-spacing: .5px; }
+  .node .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .node .mood { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); }
+  .node .fix { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .n1 .dot { background: var(--c1); } .n2 .dot { background: var(--c2); }
+  .n3 .dot { background: var(--c3); } .n4 .dot { background: var(--c4); }
+
+  /* Stage cards */
+  ol.stages { list-style: none; padding: 0; margin: 20px 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: stage; }
+  ol.stages > li { counter-increment: stage; background: #fff; border: 1px solid var(--line); border-top-width: 5px; border-radius: 8px; padding: 14px; }
+  ol.stages > li:nth-child(1) { border-top-color: var(--c1); }
+  ol.stages > li:nth-child(2) { border-top-color: var(--c2); }
+  ol.stages > li:nth-child(3) { border-top-color: var(--c3); }
+  ol.stages > li:nth-child(4) { border-top-color: var(--c4); }
+  ol.stages h2 { margin: 0 0 10px; font-size: 16px; }
+  ol.stages h2::before { content: counter(stage) ". "; }
+  .label { margin: 12px 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+  ol.stages ul { margin: 0; padding-left: 16px; font-size: 13px; line-height: 1.4; }
+  ol.stages li li { margin-bottom: 4px; }
+
+  /* Advantages */
+  .adv { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; }
+  .adv h2 { margin: 0 0 8px; font-size: 16px; }
+  .adv ol { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; }
+
+  .notes { margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .notes strong { color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .timeline, ol.stages { grid-template-columns: 1fr; }
+    .timeline::before, .timeline::after { display: none; }
+  }
+  @media print {
+    @page { size: landscape; margin: 10mm; }
+    body { background: #fff; padding: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Future State Journey: From Question to a Defensible Answer</h1>
+    <p>Assets InsightHub · Venue decision-makers and supporting analysts · Design hypothesis, not a research finding</p>
+  </header>
+
+  <!-- Visual timeline -->
+  <section class="timeline" aria-label="Journey timeline">
+    <div class="node n1"><div class="dot">1</div><h3>Ask</h3>
+      <div class="sub">"Attendance vs capacity today"</div>
+      <span class="mood">Hurried, hopeful</span><div class="fix">Fixes: BUG-2042</div></div>
+    <div class="node n2"><div class="dot">2</div><h3>Recognize</h3>
+      <div class="sub">One answer, definition shown</div>
+      <span class="mood">Oriented</span><div class="fix">Fixes: BUG-2058</div></div>
+    <div class="node n3"><div class="dot">3</div><h3>Verify</h3>
+      <div class="sub">Badge, owner, freshness checked</div>
+      <span class="mood">Assured</span><div class="fix">Fixes: BUG-2061 / 2080</div></div>
+    <div class="node n4"><div class="dot">4</div><h3>Act &amp; Reuse</h3>
+      <div class="sub">Used in briefing; view saved</div>
+      <span class="mood">Decisive</span><div class="fix">Fixes: BUG-2077 / 2091</div></div>
+  </section>
+
+  <!-- Numbered stages -->
+  <ol class="stages">
+    <li>
+      <h2>Ask</h2>
+      <div class="label">User Action</div>
+      <ul><li>Types today's attendance vs capacity in plain words → gets relevant assets, not exact-name matches.</li></ul>
+      <div class="label">Internal State</div>
+      <ul><li>Hurried but hopeful → expects an answer in seconds, not twenty minutes.</li></ul>
+      <div class="label">Pain Point Addressed</div>
+      <ul><li>Exact-name-only search (BUG-2042) → intent-based search handles inconsistent venue naming.</li></ul>
+    </li>
+
+    <li>
+      <h2>Recognize</h2>
+      <div class="label">User Action</div>
+      <ul><li>Sees one recommended answer with its definition → knows what "attendance" means before using it.</li></ul>
+      <div class="label">Internal State</div>
+      <ul><li>Oriented → stops guessing between lookalike dashboards.</li></ul>
+      <div class="label">Pain Point Addressed</div>
+      <ul><li>Three attendance definitions (BUG-2058) → definition shown beside every result.</li></ul>
+    </li>
+
+    <li>
+      <h2>Verify</h2>
+      <div class="label">User Action</div>
+      <ul><li>Checks official badge, owner, refresh time → confirms the number in seconds.</li></ul>
+      <div class="label">Internal State</div>
+      <ul><li>Assured → can explain the number before presenting it.</li></ul>
+      <div class="label">Pain Point Addressed</div>
+      <ul>
+        <li>No trust indicator (BUG-2061, BUG-2080) → certification, owner, freshness visible on every asset.</li>
+        <li>Three conflicting per-capita figures (Marcus) → one marked official, others flagged.</li>
+      </ul>
+    </li>
+
+    <li>
+      <h2>Act &amp; Reuse</h2>
+      <div class="label">User Action</div>
+      <ul>
+        <li>Takes number into briefing → no spreadsheet or Data team message needed.</li>
+        <li>Saves or shares the view → colleagues reuse the same source.</li>
+      </ul>
+      <div class="label">Internal State</div>
+      <ul><li>Decisive → the platform is where the decision started.</li></ul>
+      <div class="label">Pain Point Addressed</div>
+      <ul>
+        <li>Local views, drifting Excel exports (BUG-2077, UXR-11) → saved views stay linked to source.</li>
+        <li>Duplicate requests (BUG-2091) → existing asset suggested before a new request.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <!-- Competitive advantages -->
+  <section class="adv">
+    <h2>3 Competitive Advantages Over the Manual Workaround</h2>
+    <ol>
+      <li><strong>Speed:</strong> One search replaces a twenty-minute scroll → answer arrives before the briefing.</li>
+      <li><strong>Verifiability:</strong> Badge, owner, refresh time shown → number is defensible; spreadsheets can't show these.</li>
+      <li><strong>Compounding reuse:</strong> Answers stay on-platform → next user benefits; workarounds stay private and drift.</li>
+    </ol>
+  </section>
+
+  <p class="notes">
+    <strong>Caveats:</strong> Based on illustrative sample data; capabilities are design hypotheses.
+    Stage 3 depends on reconciling KPI definitions first (BUG-2058), because a badge on conflicting numbers only labels the conflict.
+    "Intelligent" here means intent-based search only; the research doesn't mention AI features.
+    "Seconds" is an aspiration with no measured baseline. Marcus's current-state steps are inferred.
+  </p>
+
+</div>
+
+
+</body></html>
