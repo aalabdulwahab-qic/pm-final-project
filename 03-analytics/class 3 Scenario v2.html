@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scenario A · Assets InsightHub – Find the answer in the data</title>
+<style>
+  :root { --bg:#0a0a0a; --ink:#f5f5f5; --muted:#a3a3a3; --line:#262626; --accent:#f59e3c; --blue:#60a5fa; --red:#f87171; --green:#4ade80; --card:#111; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:32px 24px 64px; background:var(--bg); color:var(--ink); font-family:"Segoe UI",Arial,sans-serif; line-height:1.5; }
+  .page { max-width:1100px; margin:0 auto; border-left:2px solid var(--accent); padding-left:28px; }
+  .tag { font-family:Consolas,monospace; color:var(--accent); font-size:14px; font-weight:700; }
+  h1 { display:inline; margin:0 0 0 14px; font-size:38px; letter-spacing:-1px; }
+  h2 { font-size:20px; margin:48px 0 4px; letter-spacing:-.3px; }
+  .desc { color:var(--muted); font-size:15px; margin:0 0 18px; }
+  .intro { color:var(--muted); font-size:16px; margin:14px 0 24px; }
+
+  /* Mission */
+  .mission { background:#1a1206; border:1px solid #4a3410; border-radius:8px; padding:16px 20px; }
+  .mission h3 { margin:0 0 6px; font-family:Consolas,monospace; font-size:12px; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent); }
+  .mission blockquote { margin:0 0 8px; font-size:18px; font-weight:600; }
+  .mission p { margin:0; font-size:14px; color:#d4d4d4; }
+  .journey { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 0; font-family:Consolas,monospace; font-size:12px; }
+  .journey span { border:1px solid var(--line); border-radius:999px; padding:4px 12px; color:var(--muted); }
+  .journey span b { color:var(--accent); }
+  .progress { margin-top:14px; font-size:13px; color:var(--muted); font-family:Consolas,monospace; }
+
+  /* Funnel */
+  .funnel .row { display:grid; grid-template-columns:260px 1fr 60px; align-items:center; gap:12px; padding:6px 0; }
+  .funnel .name { font-weight:700; font-size:15px; }
+  .funnel .name small { display:block; font-weight:400; color:var(--muted); font-size:11px; font-family:Consolas,monospace; text-transform:uppercase; letter-spacing:.5px; }
+  .funnel .bar { height:10px; background:#1a1a1a; border-radius:5px; overflow:hidden; }
+  .funnel .bar i { display:block; height:100%; background:var(--blue); border-radius:5px; }
+  .funnel .val { text-align:right; font-family:Consolas,monospace; font-weight:700; color:var(--blue); }
+
+  /* Tables */
+  table { width:100%; border-collapse:collapse; margin-top:22px; font-size:14px; }
+  th { text-align:left; font-family:Consolas,monospace; font-size:11px; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent); padding:12px 14px; border-bottom:1px solid var(--line); }
+  td { padding:14px; border-bottom:1px solid var(--line); color:#d4d4d4; }
+  td.dim { color:var(--muted); }
+  .heat td, .heat th { text-align:center; padding:10px 8px; }
+  .heat td:first-child, .heat th:first-child { text-align:left; }
+  .heat td.c { font-family:Consolas,monospace; font-weight:700; border:2px solid var(--bg); border-radius:4px; }
+  .s { background:#14532d; color:#bbf7d0; } .h { background:#3f6212; color:#ecfccb; }
+  .w { background:#854d0e; color:#fef08a; } .k { background:#9a3412; color:#fed7aa; } .l { background:#7f1d1d; color:#fecaca; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; margin-top:12px; font-size:12px; color:var(--muted); }
+  .legend span::before { content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-2px; background:var(--c); }
+
+  /* Question card */
+  .q { margin-top:24px; background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:6px; padding:16px 20px; }
+  .q h3 { margin:0 0 6px; font-family:Consolas,monospace; font-size:12px; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent); }
+  .q .ask { margin:0 0 12px; font-size:16px; font-weight:600; }
+  .opt { display:block; padding:8px 12px; margin-bottom:6px; border:1px solid var(--line); border-radius:6px; font-size:14px; color:#d4d4d4; cursor:pointer; }
+  .opt:hover { border-color:var(--accent); }
+  .opt input { margin-right:10px; accent-color:var(--accent); }
+  textarea, select { width:100%; background:#0d0d0d; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:10px; font:inherit; font-size:14px; margin-top:6px; }
+  label.lbl { display:block; margin-top:12px; font-size:12px; color:var(--muted); }
+  .btns { display:flex; gap:10px; margin-top:12px; align-items:center; flex-wrap:wrap; }
+  button { background:var(--accent); color:#111; border:0; border-radius:6px; padding:8px 16px; font-weight:700; cursor:pointer; font-size:14px; }
+  button.ghost { background:transparent; color:var(--muted); border:1px solid var(--line); font-weight:400; }
+  .fb { font-size:14px; font-weight:600; }
+  .fb.ok { color:var(--green); } .fb.bad { color:var(--red); } .fb.warn { color:var(--accent); }
+  .explain { margin-top:14px; background:#1a1206; border:1px solid #4a3410; border-radius:6px; padding:12px 18px; font-size:14px; color:#e5e5e5; }
+  .explain p { margin:0 0 8px; } .explain p:last-child { margin:0; }
+  .explain .refl { color:var(--accent); }
+  [hidden] { display:none !important; }
+
+  /* Evidence board + final */
+  .board { margin-top:48px; background:var(--card); border:1px dashed #4a3410; border-radius:8px; padding:14px 20px; }
+  .board h3 { margin:0 0 8px; font-family:Consolas,monospace; font-size:12px; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent); }
+  .board ul { margin:0; padding-left:20px; font-size:14px; color:#d4d4d4; }
+  .board .empty { color:var(--muted); font-size:13px; }
+  .final.locked { opacity:.35; pointer-events:none; }
+  .note { margin-top:36px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:14px; }
+
+  @media (max-width:800px){ h1{font-size:26px;} .funnel .row{grid-template-columns:1fr 50px;} .funnel .bar{grid-column:1 / -1;} table{font-size:12px;} }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <span class="tag">Scenario A · Assets InsightHub</span><h1>Find the answer in the data</h1>
+  <p class="intro">You are the analyst. Leadership has a question, and the answer is hidden in three snapshots. Answer each question using the numbers, then build your recommendation.</p>
+
+  <div class="mission">
+    <h3>Leadership question</h3>
+    <blockquote>"People can find data on InsightHub, but they aren't using it. Where do we invest first, and for whom?"</blockquote>
+    <p>Your job: use the snapshots to pick <strong>one journey stage</strong> and <strong>one user segment</strong>, and say what you would test first.</p>
+    <div class="journey"><span><b>1</b> Discover</span><span><b>2</b> Understand</span><span><b>3</b> Trust</span><span><b>4</b> Decide</span></div>
+    <div class="progress" id="progress">0 of 3 questions answered</div>
+  </div>
+
+  <!-- SNAPSHOT 1 -->
+  <h2>Snapshot 1 of 3 · Discovery &amp; Funnel Health (last 90 days)</h2>
+  <p class="desc">Journey funnel (% of search sessions that reach each stage) alongside core usage metrics.</p>
+
+  <div class="funnel">
+    <div class="row"><div class="name">Search Started<small>Discover</small></div><div class="bar"><i style="width:100%"></i></div><div class="val">100%</div></div>
+    <div class="row"><div class="name">Results Viewed<small>Discover</small></div><div class="bar"><i style="width:78%"></i></div><div class="val">78%</div></div>
+    <div class="row"><div class="name">Asset Opened<small>Understand</small></div><div class="bar"><i style="width:52%"></i></div><div class="val">52%</div></div>
+    <div class="row"><div class="name">Trust Info Checked<small>Trust · badge, owner, freshness</small></div><div class="bar"><i style="width:31%"></i></div><div class="val">31%</div></div>
+    <div class="row"><div class="name">Used in Briefing or Report<small>Decide</small></div><div class="bar"><i style="width:12%"></i></div><div class="val">12%</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Metric</th><th>Current</th><th>6 months ago</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td class="dim">Weekly active users</td><td>1,180</td><td>1,420</td><td>▼ 17%</td></tr>
+      <tr><td class="dim">Avg time to find an asset</td><td>18 min</td><td>12 min</td><td>▲ 50%</td></tr>
+      <tr><td class="dim">Searches that open an asset</td><td>52%</td><td>61%</td><td>▼ 9 pts</td></tr>
+      <tr><td class="dim">Sessions ending in data used</td><td>12%</td><td>21%</td><td>▼ 9 pts</td></tr>
+      <tr><td class="dim">Duplicate data requests / month</td><td>46</td><td>28</td><td>▲ 64%</td></tr>
+      <tr><td class="dim">Sessions checking trust info (new)</td><td>31%</td><td>N/A</td><td>·</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q" data-answer="d" data-hint="Divide each stage by the stage before it, not by 100%." data-finding="Funnel: the biggest share is lost between checking trust info and using the data (61%).">
+    <h3>Question 1 · Find the leak</h3>
+    <p class="ask">Of the people who reach a step, at which step do we lose the largest share?</p>
+    <label class="opt"><input type="radio" name="q1" value="a"> Search Started → Results Viewed</label>
+    <label class="opt"><input type="radio" name="q1" value="b"> Results Viewed → Asset Opened</label>
+    <label class="opt"><input type="radio" name="q1" value="c"> Asset Opened → Trust Info Checked</label>
+    <label class="opt"><input type="radio" name="q1" value="d"> Trust Info Checked → Used in Briefing or Report</label>
+    <label class="lbl">Show your working (optional)</label>
+    <textarea rows="2" placeholder="e.g. 78 → 52 loses 26 of 78 = ..."></textarea>
+    <div class="btns"><button class="check">Check answer</button><button class="ghost reveal">Reveal answer</button><span class="fb"></span></div>
+    <div class="explain" hidden="">
+      <p><strong>Working:</strong> 100→78 loses 22%. 78→52 loses 33%. 52→31 loses 40%. 31→12 loses 61%.</p>
+      <p>The biggest drop in points is Results → Opened (26 pts), so reading points alone points you at search. Reading as a share of who reached the step points at the last step: people check trust info and still don't use the data.</p>
+      <p class="refl">Reflect: what would make someone check a badge and still walk away? (Hypothesis: too few assets pass the check. Needs data.)</p>
+    </div>
+  </div>
+
+  <!-- SNAPSHOT 2 -->
+  <h2>Snapshot 2 of 3 · User Retention Cohort Heatmap</h2>
+  <p class="desc">Read horizontally to see how a month's new-user group stays active; read vertically to compare newer cohorts against older ones. Intent-based search and trust badges launched for the December cohort onward.</p>
+
+  <table class="heat">
+    <thead><tr><th>Cohort</th><th>Mo. 0</th><th>Mo. 1</th><th>Mo. 2</th><th>Mo. 3</th><th>Mo. 4</th><th>Mo. 5</th><th>Mo. 6</th></tr></thead>
+    <tbody>
+      <tr><td>Sep · Exact-name search</td><td class="c s">100%</td><td class="c s">64%</td><td class="c h">48%</td><td class="c w">37%</td><td class="c k">28%</td><td class="c k">21%</td><td class="c l">17%</td></tr>
+      <tr><td>Oct · Exact-name search</td><td class="c s">100%</td><td class="c s">62%</td><td class="c h">46%</td><td class="c w">35%</td><td class="c k">26%</td><td class="c l">19%</td><td></td></tr>
+      <tr><td>Nov · Exact-name search</td><td class="c s">100%</td><td class="c s">60%</td><td class="c w">44%</td><td class="c w">32%</td><td class="c k">23%</td><td></td><td></td></tr>
+      <tr><td>Dec · Intent + badges</td><td class="c s">100%</td><td class="c s">73%</td><td class="c s">60%</td><td class="c h">51%</td><td></td><td></td><td></td></tr>
+      <tr><td>Jan · Intent + badges</td><td class="c s">100%</td><td class="c s">76%</td><td class="c s">63%</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Feb · Intent + badges</td><td class="c s">100%</td><td class="c s">78%</td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+  <div class="legend">
+    <span style="--c:#14532d">Strong (60%+)</span><span style="--c:#3f6212">Healthy (45 to 59%)</span>
+    <span style="--c:#854d0e">Watch (30 to 44%)</span><span style="--c:#9a3412">Weak (20 to 29%)</span><span style="--c:#7f1d1d">Leak (&lt;20%)</span>
+  </div>
+
+  <div class="q" data-answer="c" data-hint="Average the three Month 1 values for each group, then subtract." data-finding="Retention: intent + badge cohorts keep about 14 pts more users at Month 1, but the first-month drop is still the biggest leak.">
+    <h3>Question 2 · Size the difference</h3>
+    <p class="ask">On average, how many points higher is Month 1 retention for the Intent + badges cohorts than for the Exact-name cohorts?</p>
+    <label class="opt"><input type="radio" name="q2" value="a"> About 4 points</label>
+    <label class="opt"><input type="radio" name="q2" value="b"> About 9 points</label>
+    <label class="opt"><input type="radio" name="q2" value="c"> About 14 points</label>
+    <label class="opt"><input type="radio" name="q2" value="d"> About 22 points</label>
+    <label class="lbl">Show your working (optional)</label>
+    <textarea rows="2" placeholder="Exact-name average = ... Intent average = ..."></textarea>
+    <div class="btns"><button class="check">Check answer</button><button class="ghost reveal">Reveal answer</button><span class="fb"></span></div>
+    <div class="explain" hidden="">
+      <p><strong>Working:</strong> Exact-name: (64 + 62 + 60) ÷ 3 = 62%. Intent + badges: (73 + 76 + 78) ÷ 3 ≈ 76%. Gap ≈ 14 points.</p>
+      <p>Look again: even for the best cohort, 22 points are lost between Month 0 and Month 1 (27 for Dec, 22 for Feb). That is still the largest drop in every row. The first visit is where users leave.</p>
+      <p class="refl">Reflect: the launch coincided with the lift, but that is correlation. What else changed in Dec–Feb that could explain it?</p>
+    </div>
+  </div>
+
+  <!-- SNAPSHOT 3 -->
+  <h2>Snapshot 3 of 3 · User Segment Performance</h2>
+  <p class="desc">Performance by user segment. Which group offers the highest business impact?</p>
+
+  <table>
+    <thead><tr><th>Segment</th><th>% of base</th><th>Sessions / wk</th><th>Data requests / user / mo</th><th>Asset mix</th><th>Duplicate-request rate if trust-signal exposed</th></tr></thead>
+    <tbody>
+      <tr><td>Decision-makers</td><td>22%</td><td>4.8×</td><td>0.4</td><td>58% Certified / 22% Local copies</td><td>N/A (low requests anyway)</td></tr>
+      <tr><td>Supporting Analysts</td><td>37%</td><td>2.3×</td><td>1.1</td><td>31% Certified / 44% Local copies</td><td>▼ 14 pts vs non-exposed</td></tr>
+      <tr><td>Occasional Viewers</td><td>41%</td><td>1.1×</td><td>2.3</td><td>18% Certified / 61% Local copies</td><td>▼ 22 pts vs non-exposed ✓</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q" data-answer="c" data-hint="Multiply % of base by requests per user for each segment, then compare the totals." data-finding="Segments: Occasional Viewers drive about 66% of all data requests and respond most to trust signals (▼ 22 pts).">
+    <h3>Question 3 · Find the opportunity</h3>
+    <p class="ask">Which segment generates the biggest share of all data requests?</p>
+    <label class="opt"><input type="radio" name="q3" value="a"> Decision-makers</label>
+    <label class="opt"><input type="radio" name="q3" value="b"> Supporting Analysts</label>
+    <label class="opt"><input type="radio" name="q3" value="c"> Occasional Viewers</label>
+    <label class="lbl">Show your working (optional)</label>
+    <textarea rows="2" placeholder="22% × 0.4 = ... 37% × 1.1 = ... 41% × 2.3 = ..."></textarea>
+    <div class="btns"><button class="check">Check answer</button><button class="ghost reveal">Reveal answer</button><span class="fb"></span></div>
+    <div class="explain" hidden="">
+      <p><strong>Working (per 100 users):</strong> Decision-makers 22 × 0.4 ≈ 9. Analysts 37 × 1.1 ≈ 41. Viewers 41 × 2.3 ≈ 94. Total ≈ 144, so Viewers ≈ 66%, Analysts ≈ 28%, Decision-makers ≈ 6%.</p>
+      <p>The heaviest platform users (Decision-makers, 4.8 sessions/week) are the smallest source of requests. The lightest users make the most requests, work from the most local copies, and respond most to trust signals.</p>
+      <p class="refl">Reflect: why might the group with the most local copies respond most to a trust signal?</p>
+    </div>
+  </div>
+
+  <!-- EVIDENCE BOARD -->
+  <div class="board">
+    <h3>Your evidence board</h3>
+    <p class="empty" id="empty">Findings appear here as you answer each question.</p>
+    <ul id="findings"></ul>
+  </div>
+
+  <!-- FINAL -->
+  <div class="q final locked" id="final">
+    <h3>Final · Your recommendation (unlocks after all three questions)</h3>
+    <p class="ask">Use your evidence board to answer leadership.</p>
+    <label class="lbl" for="stage">Which journey stage do you improve first?</label>
+    <select id="stage"><option value="">Choose…</option><option value="discover">Discover</option><option value="understand">Understand</option><option value="trust">Trust</option><option value="decide">Decide</option></select>
+    <label class="lbl" for="seg">Which segment do you design for first?</label>
+    <select id="seg"><option value="">Choose…</option><option value="dm">Decision-makers</option><option value="an">Supporting Analysts</option><option value="viewers">Occasional Viewers</option></select>
+    <label class="lbl" for="test">What would you test first, and what result would change your mind?</label>
+    <textarea id="test" rows="3"></textarea>
+    <div class="btns"><button id="submit">Submit recommendation</button><span class="fb" id="finalfb"></span></div>
+    <div class="explain" id="model" hidden="">
+      <p><strong>Best-supported answer:</strong> Improve <strong>Trust</strong> for <strong>Occasional Viewers</strong>.</p>
+      <p><strong>Why:</strong> The biggest relative loss is after trust info is checked (61%). Viewers drive about 66% of requests, hold the most local copies, and show the largest response to trust signals (▼ 22 pts). Search is not the main problem, since 78% already see results.</p>
+      <p><strong>A good first test:</strong> Show a certified/owner/freshness summary on the asset page for Viewers only, and compare "used in briefing" rates against a control group.</p>
+      <p><strong>Still unknown:</strong> Why people leave after checking trust info (too few certified assets? unclear definitions?). Understand could be the real cause. Your test should separate the two.</p>
+    </div>
+  </div>
+
+  <p class="note"><strong>Caveats:</strong> All figures are invented for training and are not research findings. Stage labels follow the journey map (Discover → Understand → Trust → Decide). Launch-timing links are correlation, not proof. Segments and "business impact" are assumptions to confirm with real data.</p>
+
+</div>
+
+<script>
+  const qs = [...document.querySelectorAll('.q[data-answer]')];
+  const board = document.getElementById('findings');
+  const empty = document.getElementById('empty');
+  const progress = document.getElementById('progress');
+  const finalCard = document.getElementById('final');
+  let done = 0;
+
+  function complete(q) {
+    if (q.dataset.done) return;
+    q.dataset.done = '1'; done++;
+    q.querySelector('.explain').hidden = false;
+    q.querySelectorAll('input').forEach(i => i.disabled = true);
+    const li = document.createElement('li'); li.textContent = q.dataset.finding;
+    board.appendChild(li); empty.hidden = true;
+    progress.textContent = done + ' of 3 questions answered';
+    if (done === 3) finalCard.classList.remove('locked');
+  }
+
+  qs.forEach(q => {
+    const fb = q.querySelector('.fb');
+    q.querySelector('.check').addEventListener('click', () => {
+      if (q.dataset.done) return;
+      const c = q.querySelector('input:checked');
+      if (!c) { fb.className = 'fb warn'; fb.textContent = 'Pick an answer first.'; return; }
+      if (c.value === q.dataset.answer) { fb.className = 'fb ok'; fb.textContent = 'Correct.'; complete(q); }
+      else { fb.className = 'fb bad'; fb.textContent = 'Not quite. Hint: ' + q.dataset.hint; }
+    });
+    q.querySelector('.reveal').addEventListener('click', () => {
+      if (q.dataset.done) return;
+      q.querySelector('input[value="' + q.dataset.answer + '"]').checked = true;
+      fb.className = 'fb warn'; fb.textContent = 'Answer revealed. Read the working below.';
+      complete(q);
+    });
+  });
+
+  document.getElementById('submit').addEventListener('click', () => {
+    const stage = document.getElementById('stage').value;
+    const seg = document.getElementById('seg').value;
+    const fb = document.getElementById('finalfb');
+    if (!stage || !seg) { fb.className = 'fb warn'; fb.textContent = 'Choose a stage and a segment.'; return; }
+    if (stage === 'trust' && seg === 'viewers') { fb.className = 'fb ok'; fb.textContent = 'Matches the evidence.'; }
+    else if (seg !== 'viewers') { fb.className = 'fb warn'; fb.textContent = 'Check Snapshot 3 again: which segment drives the requests?'; }
+    else { fb.className = 'fb warn'; fb.textContent = 'Right segment. Recheck Snapshot 1: where is the largest share lost?'; }
+    document.getElementById('model').hidden = false;
+  });
+</script>
+
+
+</body></html>
