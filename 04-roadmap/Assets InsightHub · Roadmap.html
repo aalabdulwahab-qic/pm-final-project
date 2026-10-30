@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assets InsightHub · Roadmap</title>
+<style>
+  :root{
+    --bg:#0b1426; --panel:#121d35; --panel2:#17243f; --line:#243456;
+    --text:#e8eefc; --muted:#8fa0c4; --now:#34d399; --next:#60a5fa; --later:#94a3b8; --cut:#f87171;
+    --qw:#34d399; --mp:#a78bfa; --fi:#fbbf24; --ts:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 20px 64px}
+  header h1{margin:0;font-size:2rem;letter-spacing:-.02em}
+  header h1 span{color:#60a5fa}
+  header p{margin:6px 0 0;color:var(--muted)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .pill{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.8rem;color:var(--muted)}
+  .pill b{color:var(--text);font-weight:600}
+
+  .anchors{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+  .anchors summary{cursor:pointer;font-weight:600}
+  .anchors dl{display:grid;grid-template-columns:150px 1fr;gap:8px 16px;margin:12px 0 0;font-size:.88rem}
+  .anchors dt{color:var(--muted)}
+  .anchors dd{margin:0}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:24px 0 16px}
+  .toolbar .label{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+  .chip{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .chip:hover{border-color:#3b5183}
+  .chip[aria-pressed="true"]{background:#1e3a6e;border-color:#60a5fa}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .spacer{flex:1}
+  .toolbar input{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 12px;font-size:.85rem;min-width:200px}
+  .toolbar input::placeholder{color:#5f7197}
+
+  .lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+  .lane{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:12px;padding:14px}
+  .lane header{margin-bottom:12px}
+  .lane h2{margin:0;font-size:1rem;letter-spacing:.08em;color:var(--c);display:flex;justify-content:space-between;align-items:center}
+  .lane h2 .count{background:var(--panel2);color:var(--muted);border-radius:999px;font-size:.75rem;padding:1px 9px;letter-spacing:0}
+  .lane .sub{font-size:.75rem;color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;margin-top:2px}
+  .lane.now{--c:var(--now)} .lane.next{--c:var(--next)} .lane.later{--c:var(--later)}
+
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,transform .15s}
+  .card:hover{border-color:#3b5183;transform:translateY(-1px)}
+  .card:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}
+  .card.hidden{display:none}
+  .card .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+  .card .id{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.72rem;color:var(--muted)}
+  .card h3{margin:2px 0 0;font-size:.98rem}
+  .badge{white-space:nowrap;font-size:.7rem;font-weight:700;border-radius:6px;padding:3px 8px;color:#0b1426;background:var(--b)}
+  .badge.qw{--b:var(--qw)} .badge.mp{--b:var(--mp)} .badge.fi{--b:var(--fi)} .badge.ts{--b:var(--ts)}
+  .rationale{margin:8px 0 0;font-size:.85rem;color:#c9d5f0}
+  .details{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:.8rem;color:var(--muted)}
+  .card.open .details{display:block}
+  .scores{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .meter{display:flex;align-items:center;gap:6px}
+  .meter .bars{display:flex;gap:2px}
+  .meter .bars i{width:10px;height:6px;border-radius:2px;background:#2a3c63}
+  .meter .bars i.on{background:#60a5fa}
+  .meter.effort .bars i.on{background:#fbbf24}
+  .trigger{background:#0f1a30;border-left:3px solid var(--next);border-radius:4px;padding:7px 10px;color:#c9d5f0;margin-top:6px}
+  .trigger b{color:var(--text)}
+  .origin{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.68rem;background:#0f1a30;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted)}
+  .hint{font-size:.7rem;color:#5f7197;margin-top:6px}
+
+  .prereq{border-style:dashed;background:transparent;cursor:default}
+  .prereq:hover{transform:none;border-color:var(--line)}
+
+  .cut{margin-top:32px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--cut);border-radius:12px;padding:16px}
+  .cut h2{margin:0 0 4px;color:var(--cut);font-size:1rem;letter-spacing:.08em}
+  .cut > p{margin:0 0 12px;color:var(--muted);font-size:.85rem}
+  .cutgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+  .cut .card{margin:0;opacity:.92}
+  .cut .card h3{text-decoration:line-through;text-decoration-color:#f8717180}
+  .empty{display:none;text-align:center;color:var(--muted);padding:10px;font-size:.85rem}
+
+  .legend{margin-top:28px;display:flex;flex-wrap:wrap;gap:16px;font-size:.78rem;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  footer{margin-top:20px;font-size:.75rem;color:#5f7197}
+
+  @media (max-width:900px){
+    .lanes{grid-template-columns:1fr}
+    .anchors dl{grid-template-columns:1fr}
+  }
+  @media print{
+    body{background:#fff;color:#000}
+    .toolbar{display:none}
+    .card .details{display:block}
+    .lane,.card,.cut,.anchors{background:#fff;border-color:#bbb}
+    .rationale,.details{color:#222}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Assets <span>InsightHub</span> · Roadmap</h1>
+    <p>Make the official number obvious, so people check trust info and then use the asset.</p>
+    <div class="meta">
+      <span class="pill">Team: <b>2 engineers + 1 designer</b></span>
+      <span class="pill">Primary metric: <b>check → use ≈ 39% → ≥ 50%</b></span>
+      <span class="pill">Framework: <b>Effort vs. Value</b> (High value ≥ 4, Low effort ≤ 2)</span>
+    </div>
+  </header>
+
+  <details class="anchors">
+    <summary>Strategic anchors</summary>
+    <dl>
+      <dt>Persona</dt>
+      <dd>Venue decision-makers and the analysts who support them (Marcus, UXR-02, and Priya, UXR-01). They need one number they can act on or defend, under time pressure.</dd>
+      <dt>Moment of misery</dt>
+      <dd>Marcus finds three "per-capita spend" dashboards with three different numbers and can't tell which is official (BUG-2058, BUG-2061, BUG-2080). Secondary: Priya scrolls for 20 minutes and gives up (BUG-2042).</dd>
+      <dt>Primary metric</dt>
+      <dd>Share of sessions that check trust info and then use the asset: about 39% now, target 50% or more. Supporting signals: duplicate requests falling from 46 a month, and a lower export/local-copy rate.</dd>
+      <dt>Guardrails</dt>
+      <dd>Search → asset-opened rate ≥ 52%. Time to find an asset ≤ 18 min. Mo. 0→1 retention for existing cohorts must not fall.</dd>
+    </dl>
+  </details>
+
+  <div class="toolbar" role="group" aria-label="Filters">
+    <span class="label">Filter</span>
+    <button class="chip" data-q="all" aria-pressed="true">All</button>
+    <button class="chip" data-q="Quick Win" aria-pressed="false"><i class="dot" style="background:var(--qw)"></i>Quick Win</button>
+    <button class="chip" data-q="Major Project" aria-pressed="false"><i class="dot" style="background:var(--mp)"></i>Major Project</button>
+    <button class="chip" data-q="Fill-In" aria-pressed="false"><i class="dot" style="background:var(--fi)"></i>Fill-In</button>
+    <button class="chip" data-q="Time Sinker" aria-pressed="false"><i class="dot" style="background:var(--ts)"></i>Time Sinker</button>
+    <span class="spacer"></span>
+    <input id="search" type="search" placeholder="Search features…" aria-label="Search features">
+    <button class="chip" id="toggleAll">Expand all</button>
+  </div>
+
+  <main class="lanes" id="lanes">
+    <section class="lane now" aria-labelledby="h-now">
+      <header>
+        <h2 id="h-now">NOW <span class="count" id="c-now">0</span></h2>
+        <div class="sub">3-week sprint</div>
+      </header>
+      <div id="lane-now"></div>
+      <div class="empty" id="e-now">No matching features</div>
+    </section>
+    <section class="lane next" aria-labelledby="h-next">
+      <header>
+        <h2 id="h-next">NEXT <span class="count" id="c-next">0</span></h2>
+        <div class="sub">following 1–2 sprints</div>
+      </header>
+      <div id="lane-next"></div>
+      <div class="empty" id="e-next">No matching features</div>
+    </section>
+    <section class="lane later" aria-labelledby="h-later">
+      <header>
+        <h2 id="h-later">LATER <span class="count" id="c-later">0</span></h2>
+        <div class="sub">backlog</div>
+      </header>
+      <div id="lane-later"></div>
+      <div class="empty" id="e-later">No matching features</div>
+    </section>
+  </main>
+
+  <section class="cut" aria-labelledby="h-cut">
+    <h2 id="h-cut">CUT LIST</h2>
+    <p>Not funded for this initiative. Each item notes what would bring it back.</p>
+    <div class="cutgrid" id="lane-cut"></div>
+  </section>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--qw)"></i>Quick Win: high value, low effort</span>
+    <span><i class="dot" style="background:var(--mp)"></i>Major Project: high value, high effort</span>
+    <span><i class="dot" style="background:var(--fi)"></i>Fill-In: low value, low effort</span>
+    <span><i class="dot" style="background:var(--ts)"></i>Time Sinker: low value, high effort</span>
+  </div>
+  <footer>The 39%, 61%, 31% and 46 figures are placeholder data. Validate them against real segment data before committing. Click any card to see scores and notes.</footer>
+</div>
+
+<script>
+const features = [
+  // NOW
+  {id:"C1", name:"Official Metric Badge", lane:"now", value:5, effort:2, origin:"M2 UXR",
+   rationale:"Answers Marcus's \"which one do I trust?\" at the point of decision and targets the 61% post-check drop-off directly.",
+   note:"Week 0 prerequisite: name an owner and decide the official version of each key metric (start with per-capita spend and attendance). Without that decision the badge ships empty.",
+   noteLabel:"Dependency"},
+  {id:"C4", name:"Freshness & Definition Panel", lane:"now", value:4, effort:2, origin:"M3 Funnel",
+   rationale:"Only 31% of sessions check trust info, and this puts source, definition and refresh date exactly where people look.",
+   note:"Test C1 and C4 behind a flag. Watch search → asset-opened (≥ 52%) and time to find (≤ 18 min).",
+   noteLabel:"Guardrail check"},
+  // NEXT
+  {id:"C6", name:"Export with Provenance Stamp", lane:"next", value:3, effort:2, origin:"M2 UXR",
+   rationale:"Makes the Excel workaround defensible with source, definition, refresh date and a live link, but it doesn't bring users back onto the platform.",
+   note:"Moved to Next because the 3-week sprint is tight and the C1 governance decision could slip.",
+   noteLabel:"Sequencing"},
+  {id:"C2", name:"Conflicting-Number Alert", lane:"next", value:4, effort:4, origin:"M2 UXR",
+   rationale:"Attacks the three-dashboard problem (BUG-2058, BUG-2061) at the source, but needs cross-asset matching and a catalogue of official metrics, so it follows C1.",
+   note:"Requires C1's official-metric catalogue to exist first.",
+   noteLabel:"Dependency"},
+  // LATER
+  {id:"C3", name:"Intent-Aware Search", lane:"later", value:3, effort:4, origin:"M2 UXR",
+   rationale:"Fixes Priya's BUG-2042, but it adds sessions without fixing the 61% trust loss.",
+   note:"Trigger: trust checks rise but use doesn't, or the search guardrail drops.",
+   noteLabel:"Trigger", trigger:true},
+  {id:"C8", name:"AI \"Ask Your Data\" Chat", lane:"later", value:3, effort:5, origin:"Sales",
+   rationale:"Real value for findability, but only when grounded in official metrics. Chat answers also don't register in the check-then-use metric.",
+   note:"Only grounded in official metrics, and only once \"use\" is redefined to count chat answers.",
+   noteLabel:"Trigger", trigger:true},
+  {id:"C5", name:"Request Deflection Suggestions", lane:"later", value:2, effort:3, origin:"M3 Data",
+   rationale:"Could cut the 46 duplicate requests a month, but only once certified assets (C1) exist and search (C3) can match them.",
+   note:"Revisit once the request logs are verified.",
+   noteLabel:"Trigger", trigger:true},
+  {id:"C7", name:"Role-Based First-Week Guide", lane:"later", value:2, effort:3, origin:"M3 Retention",
+   rationale:"Neither moment of misery is about onboarding, and the Mo. 0→1 values are unverified.",
+   note:"Revisit once the Mo. 0→1 values are verified.",
+   noteLabel:"Trigger", trigger:true},
+  // CUT
+  {id:"C10", name:"Granular Permission Matrix", lane:"cut", value:1, effort:4, origin:"Engineering",
+   rationale:"An Engineering request with no link to either moment of misery or the primary metric.",
+   note:"Would return only with a separate security or compliance driver.",
+   noteLabel:"Revisit if"},
+  {id:"C9", name:"Custom Dashboard Builder (as written)", lane:"cut", value:2, effort:4, origin:"Sales",
+   rationale:"Multiplies versions of \"per-capita spend\", which is exactly the problem Marcus described.",
+   note:"A certified-metrics-only self-service version could return as a Later item if request logs show analysts need custom slices.",
+   noteLabel:"Revisit if"}
+];
+
+function quadrant(v,e){
+  const hv = v >= 4, le = e <= 2;
+  if (hv && le) return {label:"Quick Win", cls:"qw"};
+  if (hv && !le) return {label:"Major Project", cls:"mp"};
+  if (!hv && le) return {label:"Fill-In", cls:"fi"};
+  return {label:"Time Sinker", cls:"ts"};
+}
+function bars(n){
+  let s=""; for(let i=1;i<=5;i++) s+=`<i class="${i<=n?'on':''}"></i>`; return s;
+}
+function esc(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML;}
+
+function cardHTML(f){
+  const q = quadrant(f.value,f.effort);
+  return `
+    <article class="card" tabindex="0" role="button" aria-expanded="false"
+             data-q="${q.label}" data-text="${esc((f.id+' '+f.name+' '+f.rationale+' '+f.note).toLowerCase())}">
+      <div class="top">
+        <div>
+          <div class="id">${f.id}</div>
+          <h3>${esc(f.name)}</h3>
+        </div>
+        <span class="badge ${q.cls}">${q.label}</span>
+      </div>
+      <p class="rationale">${esc(f.rationale)}</p>
+      <div class="details">
+        <div class="scores">
+          <div class="meter"><span>Value ${f.value}/5</span><span class="bars">${bars(f.value)}</span></div>
+          <div class="meter effort"><span>Effort ${f.effort}/5</span><span class="bars">${bars(f.effort)}</span></div>
+          <span class="origin">${esc(f.origin)}</span>
+        </div>
+        <div class="trigger"><b>${esc(f.noteLabel)}:</b> ${esc(f.note)}</div>
+      </div>
+    </article>`;
+}
+
+// Render
+const lanes = ["now","next","later","cut"];
+lanes.forEach(l=>{
+  const el = document.getElementById("lane-"+l);
+  el.innerHTML = features.filter(f=>f.lane===l).map(cardHTML).join("");
+});
+// Week 0 prerequisite card in NOW (not a scored feature)
+document.getElementById("lane-now").insertAdjacentHTML("afterbegin", `
+  <article class="card prereq" data-q="__prereq" data-text="week 0 prerequisite owner official metric">
+    <div class="top"><div><div class="id">WEEK 0</div><h3>Prerequisite: name the metric owner</h3></div></div>
+    <p class="rationale">Decide the official version of per-capita spend and attendance before C1 ships. Not a feature, but it gates C1.</p>
+  </article>`);
+
+// Interactions
+document.addEventListener("click", e=>{
+  const c = e.target.closest(".card:not(.prereq)");
+  if(c) toggle(c);
+});
+document.addEventListener("keydown", e=>{
+  if((e.key==="Enter"||e.key===" ") && e.target.matches(".card:not(.prereq)")){
+    e.preventDefault(); toggle(e.target);
+  }
+});
+function toggle(c){
+  const open = c.classList.toggle("open");
+  c.setAttribute("aria-expanded", open);
+  syncToggleAll();
+}
+
+let activeQ = "all";
+document.querySelectorAll(".chip[data-q]").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    activeQ = b.dataset.q;
+    document.querySelectorAll(".chip[data-q]").forEach(x=>x.setAttribute("aria-pressed", x===b));
+    applyFilters();
+  });
+});
+document.getElementById("search").addEventListener("input", applyFilters);
+
+function applyFilters(){
+  const term = document.getElementById("search").value.trim().toLowerCase();
+  const filtering = activeQ !== "all" || term !== "";
+  document.querySelectorAll(".card").forEach(c=>{
+    let show;
+    if(c.classList.contains("prereq")){
+      show = !filtering;
+    } else {
+      const qOk = activeQ==="all" || c.dataset.q===activeQ;
+      const tOk = !term || c.dataset.text.includes(term);
+      show = qOk && tOk;
+    }
+    c.classList.toggle("hidden", !show);
+  });
+  ["now","next","later"].forEach(l=>{
+    const cards = [...document.querySelectorAll(`#lane-${l} .card:not(.prereq)`)];
+    const visible = cards.filter(c=>!c.classList.contains("hidden")).length;
+    document.getElementById("c-"+l).textContent = visible;
+    document.getElementById("e-"+l).style.display = visible ? "none" : "block";
+  });
+}
+
+const toggleBtn = document.getElementById("toggleAll");
+toggleBtn.addEventListener("click", ()=>{
+  const cards = [...document.querySelectorAll(".card:not(.prereq)")];
+  const expand = !cards.every(c=>c.classList.contains("open"));
+  cards.forEach(c=>{c.classList.toggle("open", expand); c.setAttribute("aria-expanded", expand);});
+  syncToggleAll();
+});
+function syncToggleAll(){
+  const cards = [...document.querySelectorAll(".card:not(.prereq)")];
+  toggleBtn.textContent = cards.every(c=>c.classList.contains("open")) ? "Collapse all" : "Expand all";
+}
+applyFilters();
+</script>
+
+
+</body></html>
