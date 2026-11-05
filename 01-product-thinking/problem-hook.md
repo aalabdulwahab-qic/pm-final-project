@@ -1,6 +1,6 @@
 # Problem Hook & Value Proposition, Module 1
 
-- **Scenario:** My own initiative
+- **Scenario:** Assets InsightHub
 
 ## Strategic crisis
 If Assets InsightHub does nothing for 12 months, every duplicated or ad-hoc request will add another dashboard, extract, or AI use case that users can't easily find or trust. Users will fall back on spreadsheets and manual requests to the Data team. This has three effects:
